@@ -57,7 +57,7 @@ class GenParkSearchClient:
                     timeout=15
                 )
                 response.raise_for_status()
-                return self._parse_response(response.json())
+                return self._parse_response(response.json(), query)
             except Exception as e:
                 last_err = e
                 wait_time = 2 ** attempt
@@ -66,7 +66,7 @@ class GenParkSearchClient:
                 
         raise GenParkSearchError(f"GenPark API search failed after 3 attempts: {last_err}")
 
-    def _parse_response(self, raw_data: Dict[str, Any]) -> Dict[str, Any]:
+    def _parse_response(self, raw_data: Dict[str, Any], query: str = "") -> Dict[str, Any]:
         """
         Parses and structures the raw api response payload.
         """
@@ -84,9 +84,13 @@ class GenParkSearchClient:
             })
             citations[str(citation_id)] = item.get("url", "")
             
+        encoded_query = urllib.parse.quote(query)
+        web_result_url = f"https://genpark.ai/agent-result?query={encoded_query}"
+
         return {
             "ranked_results": ranked,
-            "citations": citations
+            "citations": citations,
+            "web_result_url": web_result_url
         }
 
     def _simulate_search(self, query: str, max_results: int, filter_domain: Optional[str]) -> Dict[str, Any]:
@@ -120,4 +124,4 @@ class GenParkSearchClient:
         simulated_results = simulated_results[:max_results]
         
         # Parse through standard parser to keep interface consistent
-        return self._parse_response({"results": simulated_results})
+        return self._parse_response({"results": simulated_results}, query)

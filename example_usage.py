@@ -25,6 +25,9 @@ def main():
         
     print("\nStructured Citations Object:")
     print(json.dumps(result_a["citations"], indent=2))
+    
+    print("\nGenPark User-Facing Web Results URL:")
+    print(result_a["web_result_url"])
 
     # Test Query B: Domain-restricted query
     query_b = "Zenith Audio"
