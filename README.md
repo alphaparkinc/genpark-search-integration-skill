@@ -1,4 +1,4 @@
-# GenPark Search Integration Skill
+# genpark-search-integration-skill
 
 This repository contains the **GenPark Search Integration Skill** — an agent customization skill config (`skill.json`), a production-ready Python SDK client (`search_client.py`), and executable verification tests. It is designed to interface with the GenPark Search API to gather ranked search indexing content, extract citations, filter targets by domain names, and execute API connections using exponent backoffs.
 
